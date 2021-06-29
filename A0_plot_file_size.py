@@ -1,6 +1,7 @@
 import pandas as pd
 from pathlib import Path
 import pylab as plt
+import seaborn as sns
 
 locations = {
     "branch_depth": "max_branch_depth",
@@ -9,15 +10,24 @@ locations = {
     "empty_commits": "max_empty_commits",
 }
 
-for k, v in locations.items():
-    f_csv = Path(v) / "status_log.csv"
-    df = pd.read_csv(f_csv)
+aspect_ratio = 16 / 9
 
-    # plt.plot(df.compress_time, label=k)
-    # plt.plot(df.interval_time, label=k)
-    plt.plot(df.action_time, label=k)
+for key in ["compress_time", "interval_time", "action_time"]:
+    plt.figure(figsize=(6 * aspect_ratio, 6))
+
+    for k, v in locations.items():
+        f_csv = Path(v) / "status_log.csv"
+        df = pd.read_csv(f_csv)
+
+        plt.plot(df[key], label=k, lw=4)
+
+    plt.legend()
+    sns.despine()
+    plt.title(key)
+    plt.tight_layout()
+    plt.savefig(f"docs/{key}.png")
 
     print(df)
 
-plt.legend()
+
 plt.show()
