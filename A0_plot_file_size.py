@@ -19,11 +19,15 @@ for key in ["compress_time", "interval_time", "action_time"]:
         f_csv = Path(v) / "status_log.csv"
         df = pd.read_csv(f_csv)
 
-        plt.plot(df[key], label=k, lw=4)
+        plt.plot(df['n_commits'], df[key], label=k, lw=4)
 
     plt.legend()
     sns.despine()
     plt.title(key)
+    plt.xlabel("Iterations")
+    plt.ylabel("Time (seconds)")
+    
+    plt.ylabel("")
     plt.tight_layout()
     plt.savefig(f"docs/{key}.png")
 
